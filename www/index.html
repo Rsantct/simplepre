@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+    
+<!--
+Copyright (c) 2019 Rafael Sánchez
+This file is part of 'simplepre' which is
+based on FIRtro https://github.com/AudioHumLab/FIRtro
+Copyright (c) 2006-2011 Roberto Ripio
+Copyright (c) 2011-2016 Alberto Miguélez
+Copyright (c) 2016-2018 Rafael Sánchez
+'simplepre' is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+pre.di.c is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+You should have received a copy of the GNU General Public License
+along with 'simplepre'.  If not, see https://www.gnu.org/licenses/.
+-->
+    
+<head>
+
+    <title>simplepre</title>
+
+    <!-- responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- web-app behavoir (full screen when iconize at init screen on smartphones -->
+    <!-- some Androids: -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <!-- iOS:  https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariHTMLRef/Articles/MetaTags.html -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <meta charset="utf-8">
+
+    <!-- The javascript functions used when an event occurs on this page body's -->
+    <script src="js/functions.js"></script>
+
+    <!-- CSS Styles
+        (i) To comment out inside CSS style tag use /* xxx */
+            The .xxxxx refers to classes definitions
+    -->
+    <style>
+
+        /* GLOBAL THEME */
+        body    {   color:white;
+                    background-color: rgb(38, 38, 38);
+                    font-family: Verdana, Helvetica, Arial;
+                    font-weight:bold;
+                }
+
+        /* GLOBAL BUTTONS STYLE */
+        button  {   background-color: rgb(100, 100, 100);
+                    border-radius: 5px/5px;
+                    border:2px solid rgb(120,120,120);
+                    /* Text inside buttons: */
+                    color: white;                         
+                    font-weight:bold;
+                    font-size:0.95em;   /* smaller than usual */
+                }
+
+        /* GLOBAL TABLES behavior */
+        table   {   width: 100%;
+                }
+                  
+        /* GLOBAL TABLES CELLS behavior */
+        th, td  {   padding: 5px;
+                    text-align: center;
+                    border: 1px solid gray;
+                    font-size:1.0em;
+                }
+
+        /* GLOBAL SELECT behavior */
+        select  {   font-size:          0.9em;
+                    font-weight:        bold;
+                    color:              white;
+                    background-color:   rgb(25, 25, 25);
+                }
+
+        td#main_lside       { width: 10%; text-align: center; border: none; }
+        td#main_center      { width: 90%; text-align: center; border: 2px solid white; border-radius: 10px/10px; }
+        td#main_rside       { width: 10%; text-align: center; border: none; }
+
+        td#levelInfo        { width:   30%; text-align: center; border: 1px solid white; border-radius: 10px/10px; 
+                              font-size:1.25em; }
+
+        td#level_buttons_row_1     { width: 50%; border: none; font-size:1.25em;}
+        td#level_buttons_row_2     { width: 50%; border: none; font-size:1.25em;}
+
+        td#LoudnessInfo     { width: 20%; border: none; font-size:1.0em;}
+        td#MonoInfo         { width: 20%; border: none; font-size:1.0em;}
+
+        td#treble           { width:50%; border: none; font-size:0.8em;}
+        td#bass             { width:50%; border: none; font-size:0.8em;}
+        
+    </style>
+
+</head>
+
+<!-- initizalizes the web page, and auto updates -->
+<body onload="page_initiate()" >
+
+    <!-- main title loudspeaker name -->
+    <div>
+    <table id="main_title" >
+        <tr>
+            <td id="main_lside" style="display:none">   </td>
+            <td id="main_center">                       </td>
+            <td id="main_rside" style="display:none">   </td>
+        </tr>
+    </table>
+    </div>
+
+    <!-- spacing -->
+    <br>
+
+    <!-- loudness, mono, tone controls, level display  -->
+    <div>
+      <table>
+        <tr>    <!-- ROW_1 -->
+
+
+            <!-- LOUDNESS control -->
+            <td id="LoudnessInfo">
+                <button type="button" id="buttonLoud" onmousedown="control_cmd('loudness_track toggle')" >L</button>
+            </td>
+        
+            <!-- LEVEL display -->
+            <td id="levelInfo" rowspan="2">
+            </td>
+
+			<!-- TREBLE CONTROL -->
+			<td	id="treble" rowspan="1">
+                <button type="button"                 onmousedown="control_cmd('treble -1 add')"  >-</button>
+                <span id="trebleInfo">treble</span>
+                <button type="button"                 onmousedown="control_cmd('treble +1 add')"  >+</button>
+			</td>
+
+        </tr>
+
+        <tr>    <!-- ROW_2 -->
+
+            <!-- MONO / STEREO control -->
+            <td id="MonoInfo">
+                <button type="button" id="buttonMono" onmousedown="control_cmd('mono toggle')"           >M</button>
+            </td>
+
+            <!-- BASS CONTROL -->
+			<td	id="bass" rowspan="1">
+                <button type="button"                 onmousedown="control_cmd('bass   -1 add')"  >-</button>
+                <span id="bassInfo">bass</span>
+                <button type="button"                 onmousedown="control_cmd('bass   +1 add')"  >+</button>
+			</td>            
+
+        </tr>
+
+      </table>
+    </div>
+
+    <!-- TWO ROWS for LEVEL CONTROL -->
+	<div>
+		<table>
+          <tr>
+            <td id="level_buttons_row_1" style="border:none">
+                <button type="button" onmousedown="control_cmd('level -1 add')" >
+                        &nbsp;-1&nbsp;</button>
+                <button type="button" onmousedown="control_cmd('mute toggle')" id="buttonMute" >
+                        &nbsp;&nbsp;0&nbsp;&nbsp;</button>            
+                <button type="button" onmousedown="control_cmd('level +1 add')" >
+                        &nbsp;+1&nbsp;</button>
+            </td>
+          </tr>
+          <tr>
+            <td id="level_buttons_row_2" style="border:none">
+                <button type="button" onmousedown="control_cmd('level -3 add')" >
+                        &nbsp;&nbsp;&nbsp;-3&nbsp;&nbsp;&nbsp;</button>
+                <button type="button" onmousedown="control_cmd('level +3 add')" >
+                        &nbsp;&nbsp;&nbsp;+3&nbsp;&nbsp;&nbsp;</button>
+            </td>
+          </tr>
+		</table>
+	</div>
+
+
+    <!-- UNCOMMENT TO TEST JAVASCRIPT FUNCTIONS WITH THIS BUTTON 
+    <div>
+        <button type="button"                 onclick="TESTING()" >TEST</button>
+    </div>
+    -->
+
+</body>
+</html>
