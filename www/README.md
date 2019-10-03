@@ -2,7 +2,7 @@
 
 Not needed.
 
-Just set the correct paths under your apache site file.
+Just set the correct paths under your apache site file, and adjust VirtualHost if desired.
 
 For instance:
 
