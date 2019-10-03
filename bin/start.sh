@@ -10,9 +10,9 @@ LSPK_R_PORT="system:playback_2"
 
 
 # Reading addresses and ports from the simplepre config file
-SRV_ADDR=$( grep server_addr simplepre/config/config.yml | awk '{print $NF}' )
+SRV_ADDR=$( grep server_addr ~/simplepre/config/config.yml | awk '{print $NF}' )
 SRV_ADDR=${SRV_ADDR//\"/}; SRV_ADDR=${SRV_ADDR//\'/}
-SRV_PORT=$( grep server_port simplepre/config/config.yml | awk '{print $NF}' )
+SRV_PORT=$( grep server_port ~/simplepre/config/config.yml | awk '{print $NF}' )
 
 ##################
 # STOPPING STUFF
