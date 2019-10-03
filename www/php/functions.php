@@ -72,7 +72,7 @@
     // Notice: server address and port are specified
     //         into 'config.yml' for each service,
     //         for instance 'control'
-    function predic_socket ($service, $cmd) {
+    function simplepre_socket ($service, $cmd) {
     
         $address = get_config( $service."_addr" );
         $port    = intval( get_config( $service."_port" ) );
@@ -124,7 +124,7 @@
     
     // CONTROL SERVICE: any else will be an STANDARD CONTROL command, handled by the 'control' server
     else {
-        echo predic_socket( 'server', $command );
+        echo simplepre_socket( 'server', $command );
     }
 
 ?>
