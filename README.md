@@ -5,7 +5,9 @@ A simple PC based preamplifier
 Just another preamplifier based on Jack and Brutefir
 
 This is a simplified version of FIRtro / pre.di.c
+
 https://github.com/AudioHumLab/FIRtro
+
 https://github.com/rripio/pre.di.c
 
 
