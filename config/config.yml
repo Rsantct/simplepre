@@ -1,0 +1,36 @@
+# ADDR / PORTS
+bf_addr     : localhost
+bf_port     : 3001
+server_addr : localhost
+server_port : 9989
+
+# EQ FILENAMES
+frequencies         : R20_ext-freq.dat
+loudness_mag_curves : R20_ext-loudness_mag.dat
+loudness_pha_curves : R20_ext-loudness_pha.dat
+treble_mag_curves   : R20_ext-treble_mag.dat
+treble_pha_curves   : R20_ext-treble_pha.dat
+bass_mag_curves     : R20_ext-bass_mag.dat
+bass_pha_curves     : R20_ext-bass_pha.dat
+
+# TARGET FILENAMES
+target_mag          : target_mag_+3.0-1.0.dat
+target_pha          : target_pha_+3.0-1.0.dat
+
+# LOUDSPEAKER PARAMETERS
+loudspeaker:
+    loudspeaker_name:   Castle Isis
+    # The system gain in dB for nominal SPL
+    ref_level_gain  :   0
+
+# MISCEL:
+
+# Index of the flat curve inside 'loudness_mag_curves'
+loudness_index_flat: 7
+
+# Max dB deviation from 0
+tone_variation:     6
+balance_variation:  6
+
+# Max digital gain (dB) (used to calculate headroom)
+gain_max: 6
