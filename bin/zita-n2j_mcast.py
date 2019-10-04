@@ -31,10 +31,10 @@ def get_interface_name():
     if not interface:
         print( 'init/zita-n2j_mcast: cannot get your network interface name :-/' )
         return False
-	return interface
+    return interface
 
 def start():
-	interface = get_interface_name()
+    interface = get_interface_name()
     # Using a no reserved multicast address 224.0.0.151 and port 65151
     # https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml#multicast-addresses-1
     p = sp.Popen( f'zita-n2j --jname {JACKNAME} --buff 50 224.0.0.151 65151 {interface}'.split() )
